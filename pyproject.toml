@@ -1,0 +1,13 @@
+[project]
+name = "tg-ml-archive"
+version = "0.1.0"
+description = "Archive ML Telegram channels and search them from Claude via MCP"
+requires-python = ">=3.12"
+dependencies = [
+    "jinja2>=3.1.6",
+    "mcp[cli]>=2.3.0",
+    "openai>=3.35.1",
+    "python-dotenv>=1.2.4",
+    "sqlite-vec>=0.1.9",
+    "telethon>=1.45.0",
+]

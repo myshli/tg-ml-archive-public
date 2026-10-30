@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}AI digest · {{ title }}{% endblock %}
+{% block body %}
+{% set names = d.channel_titles or {} %}
+<h1>{{ title }}</h1>
+<div class="meta">Generative AI news from {% for c in d.channels %}{{ names.get(c, c) }}{% if not loop.last %}, {% endif %}{% endfor %} · a new digest every 3 days</div>
+<div class="meta">{{ d["items"]|length }} items from {{ d.post_count }} posts ·
+  {% for c, n in d.channels.items() %}{{ names.get(c, c) }} {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}</div>
+{% if d.overview_themes %}
+<div class="overview">
+{% for t in d.overview_themes %}
+  <div><h4>{{ t.theme }}</h4>
+  <ul>{% for b in t.bullets %}<li><a href="#{{ b.id }}"><strong>{{ b.name }}</strong> — {{ b.what }}</a></li>{% endfor %}</ul></div>
+{% endfor %}
+</div>
+{% elif d.overview %}<p class="overview">{{ d.overview }}</p>{% endif %}
+
+
+{% for section, items in sections %}
+<h2 id="{{ section }}">{{ labels.get(section, section) }}<span class="count">{{ items|length }}</span></h2>
+{% for it in items %}
+<article id="{{ it.id }}" lang="{{ 'ru' if it.lang == 'Russian' else 'en' }}">
+  <h3>{{ it.title }}</h3>
+  <div class="chips">
+    {% if it.availability %}<span class="chip avail">{{ it.availability }}</span>{% endif %}
+    {% for s in it.sources[:6] %}<a class="chip" href="{{ s.url }}" target="_blank" rel="noopener">{{ names.get(s.channel, s.channel) }} · {{ s.date[8:10] }}.{{ s.date[5:7] }}</a>{% endfor %}
+    {% if it.sources|length > 6 %}<span class="chip">+{{ it.sources|length - 6 }} more</span>{% endif %}
+  </div>
+  {% for para in it.paragraphs %}<p>{{ para }}</p>{% endfor %}
+  {% if it.links %}<div class="links">{% for l in it.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ l.label }}</a>{% endfor %}</div>{% endif %}
+  {% if it.media %}
+  <div class="media{% if it.media|length == 1 %} one{% endif %}">
+    {% for m in it.media %}
+      {% if m.kind == "photo" %}
+      <a href="/media/{{ m.path }}?v={{ ver }}" target="_blank" rel="noopener"><img src="/media/{{ m.path }}?v={{ ver }}" alt="" loading="lazy"{% if m.width %} width="{{ m.width }}" height="{{ m.height }}"{% endif %}></a>
+      {% else %}
+      <video src="/media/{{ m.path }}?v={{ ver }}" {% if m.poster %}poster="/media/{{ m.poster }}?v={{ ver }}" {% endif %}controls playsinline preload="none"{% if m.kind == "gif" %} loop muted{% endif %}{% if m.width %} width="{{ m.width }}" height="{{ m.height }}"{% endif %}></video>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% elif it.media_note %}
+  <div class="note">Media for this item has expired here; it is still in the original post.</div>
+  {% endif %}
+</article>
+{% endfor %}
+{% endfor %}
+
+{% endblock %}

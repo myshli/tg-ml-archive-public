@@ -1,0 +1,28 @@
+# /etc/caddy/sites/tg-ml-archive.caddy, written by deploy/go-public.sh (the main Caddyfile
+# only imports sites/*.caddy; never edit it). Caddy gets the TLS certificate automatically
+# once the DNS A record points here. No `log` directive on purpose: an access log would
+# record the ?token= of clients that put it in the URL (claude.ai connectors).
+# go-public.sh replaces __DOMAIN__ with DOMAIN from .env.
+__DOMAIN__ {
+    encode zstd gzip
+
+    # MCP server (token-protected by the app itself)
+    @mcp path /mcp /mcp/* /.well-known/*
+    handle @mcp {
+        reverse_proxy 127.0.0.1:8765
+    }
+
+    # Old per-window URLs: there is only the latest digest now
+    redir /digest/* / 302
+
+    # The latest digest (index.html) and its media, written by digest.py / media.py
+    handle {
+        root * /var/www/tg-digest
+        # The page and feed change every 3 days: always revalidate them (a 304 when unchanged)
+        @page path / /index.html /feed.xml
+        header @page Cache-Control "no-cache"
+        # No long Cache-Control on media: Caddy would send it on 403/404 too, and browsers would keep
+        # the error for weeks. ETag/Last-Modified revalidation (304) is enough.
+        file_server
+    }
+}

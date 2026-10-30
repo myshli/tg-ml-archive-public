@@ -1,0 +1,18 @@
+[Unit]
+Description=tg-ml-archive: fetch new posts, then tag + embed them
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=tgarchive
+WorkingDirectory=/opt/tg-ml-archive
+SupplementaryGroups=tgarchive-db
+Environment=ARCHIVE_DB=/var/lib/tg-archive/archive.db
+# Group-writable WAL/SHM files, so the MCP user can open the database.
+UMask=0007
+ExecStart=/opt/tg-ml-archive/.venv/bin/python ingest.py --refresh-days 2
+ExecStart=/opt/tg-ml-archive/.venv/bin/python enrich.py
+# Images/videos of new posts for the digest pages (ffmpeg re-encodes videos to 720p).
+ExecStart=/opt/tg-ml-archive/.venv/bin/python media.py
+Nice=10
+MemoryMax=800M

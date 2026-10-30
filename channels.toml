@@ -1,0 +1,95 @@
+# Channels to archive (public username, with or without @).
+channels = [
+    "GreenNeuralRobots",
+    "open_source_ai_news",
+    "Psy_Eyes",
+]
+
+# What each channel is, sent to the tagger with its posts. Key: lowercase username.
+[about]
+greenneuralrobots = """Russian-language author channel about generative AI for artists and creators (image, video, \
+3D and audio generation, ComfyUI and LoRAs), plus LLM and agent news. Uses its own hashtags; many posts are #humor."""
+open_source_ai_news = """English bot feed: each post is an AI-written summary of one Reddit thread from \
+r/StableDiffusion, r/comfyui or r/aigamedev, in a fixed template (title, Quick Description, Key Features, link to \
+the original). Titles say "New Open Source ..." almost always, so that phrase is not evidence of open weights."""
+psy_eyes = """Russian-language author channel "Creative + AI + Web3... and memes": news and hands-on tests of image, \
+video, 3D/splats, music and speech generators, the author's own LoRA training and experiments, periodic digests \
+("Дайджест: ВИДЕО + АРТ / ЗВУК"), plus personal posts, Telegram/TON platform news and memes."""
+
+# Per-channel regex removed from the text before tagging and embedding (the stored text is kept as is).
+# Use it for recurring ad footers that would otherwise match unrelated searches.
+[strip]
+psy_eyes = '—{8,}\s*🔥 Создай своего цифрового двойника[\s\S]*$'
+
+# Topic taxonomy (1-5 per post). The description is sent to the tagger.
+# After changing it, run `uv run enrich.py --retag`.
+[topics]
+# Generative media
+image = "image generation and editing: text2image, inpainting, outpainting, controlnet, edit-by-instruction"
+video-gen = "video generation: text2video, image2video, long video, camera control"
+video-editing = "video editing and VFX: video2video, rotoscoping, compositing, frame interpolation, relighting video"
+character-animation = "talking heads, lipsync, avatars, human/character motion, pose2video, faceswap, motion capture"
+3d = "3D: text/image to 3D assets, gaussian splatting, NeRF, scene reconstruction, novel view, 3D editing, 4D"
+world-models = "interactive/explorable world generation and world simulators"
+gamedev = "AI for game development: sprites, pixel art, game assets, game engines (Godot, Unity, Unreal), procedural generation, AI-built games"
+music-audio = "music generation and editing, sound effects, stem separation, audio tools for musicians"
+speech-voice = "TTS, voice cloning, speech recognition, dubbing, translation of speech, voice assistants"
+upscale-restoration = "upscaling, super-resolution, deblur, denoise, colorization, photo/video restoration"
+# Creator ecosystem
+comfyui-workflows = "ComfyUI nodes and workflows, A1111/Forge, plugins for Blender, After Effects, Photoshop and other creative apps"
+lora-finetuning = "LoRA and model training/fine-tuning, personalization, reference/identity adapters"
+local-optimization = "running models locally: GGUF, quantization, low VRAM, distillation, speedups, Mac/CPU/mobile"
+# LLMs and agents
+llm = "language model releases, reasoning, benchmarks, LLM research"
+multimodal-understanding = "VLMs, image/video understanding, captioning, OCR, document parsing, embeddings and retrieval"
+agents = "AI agents, MCP, agent skills, computer/browser use, agent frameworks"
+coding-tools = "coding assistants, AI IDEs, vibecoding, code generation"
+# Other
+perception-cv = "segmentation, depth/normal estimation, tracking, detection, other classic computer vision"
+robotics = "robots, humanoids, embodied AI, autonomous vehicles"
+hardware = "GPUs, chips, datacenters, devices"
+industry = "companies, funding, acquisitions, legal and copyright, jobs, platform policies"
+society-ethics = "AI culture and society, safety, deepfakes, research on model behaviour and interpretability"
+community = "the author's own art, subscriber showcases, giveaways, events, channel announcements"
+offtopic = "not about AI"
+
+# Post type (exactly one).
+[kinds]
+model-release = "a new or updated model (weights, API or announcement)"
+tool-release = "an app, service, node, plugin, library or update to one"
+paper = "a research paper or method, with or without code"
+news = "industry or ecosystem news"
+digest = "a roundup of several unrelated links or items"
+workflow = "a shared ComfyUI/A1111 workflow or step-by-step generation pipeline (JSON, graph or recipe)"
+tutorial = "a how-to, guide, prompt guide or explainer that is not itself a shareable workflow"
+showcase = "generations, tests, comparisons or demos made by the author or others"
+opinion = "the author's commentary or discussion"
+humor = "jokes, memes, satire, satirical or AI-generated fake headlines"
+other = "anything else"
+
+# Whether you can actually use the thing the post is about.
+[availability]
+open-weights = "weights are downloadable"
+code-only = "code is published but no weights, or weights are not the point"
+commercial-api = "only through a paid or closed service, app or API"
+demo-only = "only an online demo or waitlist"
+not-released = "announced or paper only, nothing usable yet ('код ждем')"
+unknown = "about a specific model or tool, but the post gives no evidence either way (e.g. only a Reddit link)"
+n-a = "not about a specific model or tool"
+
+# Digest page settings (digest.py; media.py skips downloads for posts that only have no-media topics).
+[digest]
+# Sections in page order: most interesting first. Topics missing here go to the end.
+section_order = [
+    "3d", "video-gen", "video-editing", "image", "character-animation", "world-models",
+    "comfyui-workflows", "lora-finetuning", "upscale-restoration", "local-optimization", "gamedev",
+    "perception-cv", "robotics", "music-audio", "speech-voice",
+    "agents", "coding-tools", "llm", "multimodal-understanding",
+    "hardware", "industry", "society-ethics", "community", "offtopic",
+]
+# Sections shown as text and links only, without images or videos.
+no_media = [
+    "llm", "multimodal-understanding", "agents", "coding-tools",
+    "hardware", "industry", "society-ethics", "community", "offtopic",
+    "music-audio", "speech-voice",
+]

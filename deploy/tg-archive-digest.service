@@ -1,0 +1,14 @@
+[Unit]
+Description=tg-ml-archive: build the latest 3-day digest page, then drop older media
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=tgarchive
+WorkingDirectory=/opt/tg-ml-archive
+SupplementaryGroups=tgarchive-db
+Environment=ARCHIVE_DB=/var/lib/tg-archive/archive.db
+UMask=0002
+ExecStart=/opt/tg-ml-archive/.venv/bin/python digest.py
+Nice=10
+MemoryMax=400M

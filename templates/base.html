@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}AI digest{% endblock %}</title>
+<link rel="alternate" type="application/atom+xml" title="AI digest" href="/feed.xml">
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1d1c1a; --muted: #6b675f; --line: #e6e2d9; --card: #ffffff;
+  --accent: #2f6f4f; --accent-bg: #e7f1ea; --chip: #f1eee7; --warn: #8a5a14; --warn-bg: #f7eedd;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161614; --fg: #ecebe6; --muted: #a29e94; --line: #2c2b28; --card: #1e1e1b;
+    --accent: #7fc79f; --accent-bg: #1f3328; --chip: #262622; --warn: #e2b46a; --warn-bg: #352a17;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.wrap { max-width: 780px; margin: 0 auto; padding: 28px 16px 64px; }
+header.site { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 28px; }
+header.site a.home { color: var(--fg); text-decoration: none; font-weight: 650; letter-spacing: -.01em; }
+header.site nav { display: flex; gap: 14px; font-size: 15px; }
+h1 { font-size: 34px; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 6px; }
+h2 { font-size: 22px; letter-spacing: -.01em; margin: 48px 0 6px; padding-top: 8px; border-top: 2px solid var(--fg); }
+h2 .count { color: var(--muted); font-weight: 400; font-size: 16px; margin-left: 6px; }
+h3 { font-size: 19px; line-height: 1.3; margin: 0 0 6px; }
+.meta { color: var(--muted); font-size: 14px; }
+.overview { margin: 18px 0 8px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4px 28px; }
+.overview h4 { margin: 14px 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.overview ul { margin: 0; padding-left: 18px; }
+.overview li { margin: 3px 0; line-height: 1.45; }
+.overview li a { color: var(--fg); text-decoration: none; }
+.overview li a:hover { text-decoration: underline; }
+.overview > div { break-inside: avoid; }
+article { padding: 22px 0; border-bottom: 1px solid var(--line); }
+article:last-child { border-bottom: 0; }
+article p { margin: 8px 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; font-size: 13px; }
+.chip { background: var(--chip); border-radius: 999px; padding: 2px 10px; color: var(--muted); text-decoration: none; }
+a.chip:hover { color: var(--fg); }
+.chip.avail { background: var(--accent-bg); color: var(--accent); }
+.links { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; margin-top: 8px; }
+.media { display: grid; gap: 8px; margin-top: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.media.one { grid-template-columns: 1fr; }
+.media img, .media video { width: 100%; height: auto; max-height: 560px; object-fit: contain; display: block;
+  background: var(--chip); border-radius: 8px; }
+.note { font-size: 14px; color: var(--warn); background: var(--warn-bg); border-radius: 6px; padding: 6px 10px;
+  margin-top: 10px; display: inline-block; }
+footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
+@media (max-width: 520px) { body { font-size: 16px; } h1 { font-size: 27px; } .media { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+  <a class="home" href="/">AI digest</a>
+  <nav>{% block nav %}{% endblock %}<a href="/feed.xml">RSS</a></nav>
+</header>
+{% block body %}{% endblock %}
+<footer>Summaries are generated automatically from public Telegram channels; follow the source links for the originals.</footer>
+</div>
+</body>
+</html>

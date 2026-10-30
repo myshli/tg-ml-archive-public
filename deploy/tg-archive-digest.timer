@@ -1,0 +1,10 @@
+[Unit]
+Description=Build tg-ml-archive digest pages daily (each page covers a finished 3-day window)
+
+[Timer]
+# Windows close at 00:00 UTC; the hourly sync has fetched and tagged the last posts by then.
+OnCalendar=*-*-* 01:30:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

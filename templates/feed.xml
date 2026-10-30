@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>AI digest</title>
+  <link href="{{ site }}/"/>
+  <link rel="self" href="{{ site }}/feed.xml"/>
+  <id>{{ site }}/</id>
+  <updated>{{ d.built_at }}</updated>
+  <entry>
+    <title>{{ title }}</title>
+    <link href="{{ site }}/"/>
+    <id>{{ site }}/#{{ d.start }}</id>
+    <updated>{{ d.built_at }}</updated>
+    <summary>{{ d.overview }}</summary>
+  </entry>
+</feed>
